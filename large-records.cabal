@@ -23,7 +23,7 @@ library
                       , aeson
                       , containers
                       , generics-sop
-                      , haskell-src-exts
+                      , haskell-src-exts >= 1.21.1 && < 1.22
                       , haskell-src-meta
                       , record-hasfield
                       , sop-core
