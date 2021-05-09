@@ -1,7 +1,9 @@
 cabal-version:      2.4
 name:               large-records
-version:            0.1.0.0
-synopsis:           Efficient compilation for large records, linear in the size of the record
+version:            0.1.0.1
+synopsis:
+  Efficient compilation for large records, linear in the size of the record
+
 description:
 bug-reports:        https://github.com/well-typed/large-records/issues
 license:            BSD-3-Clause
@@ -11,148 +13,146 @@ category:           Generics
 extra-source-files: CHANGELOG.md
 
 library
-    exposed-modules:    Data.Record.Generic
-                        Data.Record.Generic.Eq
-                        Data.Record.Generic.JSON
-                        Data.Record.Generic.LowerBound
-                        Data.Record.Generic.Rep
-                        Data.Record.Generic.Show
-                        Data.Record.Generic.SOP
+  exposed-modules:
+    Data.Record.Generic
+    Data.Record.Generic.Arbitrary
+    Data.Record.Generic.Eq
+    Data.Record.Generic.JSON
+    Data.Record.Generic.LowerBound
+    Data.Record.Generic.Rep
+    Data.Record.Generic.Show
+    Data.Record.Generic.SOP
+    Data.Record.QQ.CodeGen
+    Data.Record.QQ.CodeGen.HSE
+    Data.Record.QQ.CodeGen.Metadata
+    Data.Record.QQ.CodeGen.View
+    Data.Record.QQ.Runtime.MatchHasField
+    Data.Record.TH
+    Data.Record.TH.CodeGen
+    Data.Record.TH.CodeGen.Name
+    Data.Record.TH.CodeGen.TH
+    Data.Record.TH.CodeGen.Tree
+    Data.Record.TH.CodeGen.Util
+    Data.Record.TH.CodeGen.View
+    Data.Record.TH.Config.Naming
+    Data.Record.TH.Config.Options
+    Data.Record.TH.Runtime
 
-                        Data.Record.QQ.CodeGen
-                        Data.Record.QQ.CodeGen.HSE
-                        Data.Record.QQ.CodeGen.Metadata
-                        Data.Record.QQ.CodeGen.View
-                        Data.Record.QQ.Runtime.MatchHasField
+  build-depends:
+    , aeson
+    , base              >=4.13   && <4.15
+    , containers
+    , generics-sop
+    , haskell-src-exts
+    , haskell-src-meta
+    , mtl
+    , QuickCheck        ^>=2.14.2
+    , record-hasfield
+    , sop-core
+    , syb
+    , template-haskell
+    , text
+    , vector
 
-                        Data.Record.TH
-                        Data.Record.TH.CodeGen
-                        Data.Record.TH.CodeGen.Name
-                        Data.Record.TH.CodeGen.TH
-                        Data.Record.TH.CodeGen.Tree
-                        Data.Record.TH.CodeGen.Util
-                        Data.Record.TH.CodeGen.View
-                        Data.Record.TH.Config.Naming
-                        Data.Record.TH.Config.Options
-                        Data.Record.TH.Runtime
-
-    build-depends:      base >=4.13 && < 4.15
-                      , aeson
-                      , containers
-                      , generics-sop
-                      , haskell-src-exts
-                      , haskell-src-meta
-                      , mtl
-                      , record-hasfield
-                      , sop-core
-                      , syb
-                      , template-haskell
-                      , text
-                      , vector
-    hs-source-dirs:     src
-    default-language:   Haskell2010
-    default-extensions: NoStarIsType
-    ghc-options:       -Wall
-                       -Wcompat
-                       -Wincomplete-uni-patterns
-                       -Wincomplete-record-updates
-                       -Wpartial-fields
-                       -Widentities
-                       -Wredundant-constraints
-                       -Wmissing-export-lists
-                       -ddump-to-file
+  hs-source-dirs:     src
+  default-language:   Haskell2010
+  default-extensions: NoStarIsType
+  ghc-options:
+    -Wall -Wcompat -Wincomplete-uni-patterns
+    -Wincomplete-record-updates -Wpartial-fields -Widentities
+    -Wredundant-constraints -Wmissing-export-lists -ddump-to-file
 
 test-suite test-large-records
-    type:               exitcode-stdio-1.0
-    main-is:            TestLargeRecords.hs
-    other-modules:      Test.Record.Sanity.Generics
-                        Test.Record.Sanity.Derive
-                        Test.Record.Sanity.HigherKinded
-                        Test.Record.Sanity.HKD
-                        Test.Record.Sanity.OverloadingNoDRF
-                        Test.Record.Sanity.PatternMatch
-                        Test.Record.Sanity.QualifiedImports
-                        Test.Record.Sanity.QualifiedImports.A
-                        Test.Record.Sanity.QualifiedImports.B
-                        Test.Record.Sanity.RecordConstruction
-                        Test.Record.Sanity.Strictness
-                        Test.Record.Size.After.HK010
-                        Test.Record.Size.After.R0010
-                        Test.Record.Size.Before.R010
-                        Test.Record.Size.Infra
-                        Test.Record.Size.Sanity
+  type:               exitcode-stdio-1.0
+  main-is:            TestLargeRecords.hs
+  other-modules:
+    Test.Record.Sanity.Derive
+    Test.Record.Sanity.Generics
+    Test.Record.Sanity.HigherKinded
+    Test.Record.Sanity.HKD
+    Test.Record.Sanity.OverloadingNoDRF
+    Test.Record.Sanity.PatternMatch
+    Test.Record.Sanity.QualifiedImports
+    Test.Record.Sanity.QualifiedImports.A
+    Test.Record.Sanity.QualifiedImports.B
+    Test.Record.Sanity.RecordConstruction
+    Test.Record.Sanity.Strictness
+    Test.Record.Size.After.HK010
+    Test.Record.Size.After.R0010
+    Test.Record.Size.Before.R010
+    Test.Record.Size.Infra
+    Test.Record.Size.Sanity
 
-    build-depends:      base
-                      , aeson
-                      , generics-sop
-                      , json-sop
-                       -- TODO: Remove:
-                      , ghc-dump-core
-                      , large-records
-                      , newtype
-                      , mtl
-                      , record-dot-preprocessor
-                      , record-hasfield
-                      , sop-core
-                      , tasty
-                      , tasty-hunit
-                      , tasty-quickcheck
-                      , template-haskell
-                      , vector
-    build-tool-depends: record-dot-preprocessor:record-dot-preprocessor
-    hs-source-dirs:     test
-    default-language:   Haskell2010
-    ghc-options:       -Wall
-                       -Wcompat
-                       -Wincomplete-uni-patterns
-                       -Wincomplete-record-updates
-                       -Wpartial-fields
-                       -Widentities
-                       -Wredundant-constraints
-                       -ddump-to-file
+  build-depends:
+    , aeson
+    , base
+    , generics-sop
+    , ghc-dump-core
+    , json-sop
+    , large-records
+    , mtl
+    , newtype
+    , record-dot-preprocessor
+    , record-hasfield
+    , sop-core
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , vector
 
-    -- We're mostly interested in compile time for -O0
-    if flag(profile-gen-code)
-      ghc-options:   -O0 -ddump-timings
-      cpp-options:   -DPROFILE_GEN_CODE
-      build-depends: ghc-dump-core
-      other-modules: Test.Record.Size.After.HK020
-                     Test.Record.Size.After.HK030
-                     Test.Record.Size.After.HK040
-                     Test.Record.Size.After.HK050
-                     Test.Record.Size.After.HK060
-                     Test.Record.Size.After.HK070
-                     Test.Record.Size.After.HK080
-                     Test.Record.Size.After.HK090
-                     Test.Record.Size.After.HK100
-                     Test.Record.Size.After.R0020
-                     Test.Record.Size.After.R0030
-                     Test.Record.Size.After.R0040
-                     Test.Record.Size.After.R0050
-                     Test.Record.Size.After.R0060
-                     Test.Record.Size.After.R0070
-                     Test.Record.Size.After.R0080
-                     Test.Record.Size.After.R0090
-                     Test.Record.Size.After.R0100
-                     Test.Record.Size.After.R0200
-                     Test.Record.Size.After.R0300
-                     Test.Record.Size.After.R0400
-                     Test.Record.Size.After.R0500
-                     Test.Record.Size.After.R0600
-                     Test.Record.Size.After.R0700
-                     Test.Record.Size.After.R0800
-                     Test.Record.Size.After.R0900
-                     Test.Record.Size.After.R1000
-                     Test.Record.Size.Before.R020
-                     Test.Record.Size.Before.R030
-                     Test.Record.Size.Before.R040
-                     Test.Record.Size.Before.R050
-                     Test.Record.Size.Before.R060
-                     Test.Record.Size.Before.R070
-                     Test.Record.Size.Before.R080
-                     Test.Record.Size.Before.R090
-                     Test.Record.Size.Before.R100
+  -- TODO: Remove:
+  build-tool-depends: record-dot-preprocessor:record-dot-preprocessor -any
+  hs-source-dirs:     test
+  default-language:   Haskell2010
+  ghc-options:
+    -Wall -Wcompat -Wincomplete-uni-patterns
+    -Wincomplete-record-updates -Wpartial-fields -Widentities
+    -Wredundant-constraints -ddump-to-file
 
-Flag profile-gen-code
-  Description: Enable to generate some statistics about the generated code
-  Default: False
+  -- We're mostly interested in compile time for -O0
+  if flag(profile-gen-code)
+    ghc-options:   -O0 -ddump-timings
+    cpp-options:   -DPROFILE_GEN_CODE
+    build-depends: ghc-dump-core
+    other-modules:
+      Test.Record.Size.After.HK020
+      Test.Record.Size.After.HK030
+      Test.Record.Size.After.HK040
+      Test.Record.Size.After.HK050
+      Test.Record.Size.After.HK060
+      Test.Record.Size.After.HK070
+      Test.Record.Size.After.HK080
+      Test.Record.Size.After.HK090
+      Test.Record.Size.After.HK100
+      Test.Record.Size.After.R0020
+      Test.Record.Size.After.R0030
+      Test.Record.Size.After.R0040
+      Test.Record.Size.After.R0050
+      Test.Record.Size.After.R0060
+      Test.Record.Size.After.R0070
+      Test.Record.Size.After.R0080
+      Test.Record.Size.After.R0090
+      Test.Record.Size.After.R0100
+      Test.Record.Size.After.R0200
+      Test.Record.Size.After.R0300
+      Test.Record.Size.After.R0400
+      Test.Record.Size.After.R0500
+      Test.Record.Size.After.R0600
+      Test.Record.Size.After.R0700
+      Test.Record.Size.After.R0800
+      Test.Record.Size.After.R0900
+      Test.Record.Size.After.R1000
+      Test.Record.Size.Before.R020
+      Test.Record.Size.Before.R030
+      Test.Record.Size.Before.R040
+      Test.Record.Size.Before.R050
+      Test.Record.Size.Before.R060
+      Test.Record.Size.Before.R070
+      Test.Record.Size.Before.R080
+      Test.Record.Size.Before.R090
+      Test.Record.Size.Before.R100
+
+flag profile-gen-code
+  description: Enable to generate some statistics about the generated code
+  default:     False
